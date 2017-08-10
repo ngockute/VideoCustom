@@ -41,8 +41,8 @@ import java.io.IOException;
 import java.util.Map;
 
 
-public class VideoView extends SurfaceView
-        implements MediaController.MediaPlayerControl,OrientationDetector.OrientationChangeListener{
+public class NgocVideoView extends SurfaceView
+        implements NgocMediaController.MediaPlayerControl,OrientationDetector.OrientationChangeListener{
     private String TAG = "UniversalVideoView";
     private Uri mUri;
 
@@ -64,7 +64,7 @@ public class VideoView extends SurfaceView
     private int         mVideoHeight;
     private int         mSurfaceWidth;
     private int         mSurfaceHeight;
-    private MediaController mMediaController;
+    private NgocMediaController mNgocMediaController;
     private MediaPlayer.OnCompletionListener mOnCompletionListener;
     private MediaPlayer.OnPreparedListener mOnPreparedListener;
     private int         mCurrentBufferPercentage;
@@ -84,15 +84,15 @@ public class VideoView extends SurfaceView
     private OrientationDetector mOrientationDetector;
     private VideoViewCallback videoViewCallback;
 
-    public VideoView(Context context) {
+    public NgocVideoView(Context context) {
         this(context,null);
     }
 
-    public VideoView(Context context, AttributeSet attrs) {
+    public NgocVideoView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public VideoView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NgocVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.VideoView,0,0);
@@ -179,14 +179,14 @@ public class VideoView extends SurfaceView
     @Override
     public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
         super.onInitializeAccessibilityEvent(event);
-        event.setClassName(VideoView.class.getName());
+        event.setClassName(NgocVideoView.class.getName());
     }
 
     @Override
     public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
         super.onInitializeAccessibilityNodeInfo(info);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            info.setClassName(VideoView.class.getName());
+            info.setClassName(NgocVideoView.class.getName());
         }
     }
 
@@ -312,19 +312,19 @@ public class VideoView extends SurfaceView
         }
     }
 
-    public void setMediaController(MediaController controller) {
-        if (mMediaController != null) {
-            mMediaController.hide();
+    public void setMediaController(NgocMediaController controller) {
+        if (mNgocMediaController != null) {
+            mNgocMediaController.hide();
         }
-        mMediaController = controller;
+        mNgocMediaController = controller;
         attachMediaController();
     }
 
     private void attachMediaController() {
-        if (mMediaPlayer != null && mMediaController != null) {
-            mMediaController.setMediaPlayer(this);
-            mMediaController.setEnabled(isInPlaybackState());
-            mMediaController.hide();
+        if (mMediaPlayer != null && mNgocMediaController != null) {
+            mNgocMediaController.setMediaPlayer(this);
+            mNgocMediaController.setEnabled(isInPlaybackState());
+            mNgocMediaController.hide();
         }
     }
 
@@ -348,15 +348,15 @@ public class VideoView extends SurfaceView
             mCanPause = mCanSeekBack = mCanSeekForward = true;
 
             mPreparedBeforeStart = true;
-            if (mMediaController != null) {
-                mMediaController.hideLoading();
+            if (mNgocMediaController != null) {
+                mNgocMediaController.hideLoading();
             }
 
             if (mOnPreparedListener != null) {
                 mOnPreparedListener.onPrepared(mMediaPlayer);
             }
-            if (mMediaController != null) {
-                mMediaController.setEnabled(true);
+            if (mNgocMediaController != null) {
+                mNgocMediaController.setEnabled(true);
             }
             mVideoWidth = mp.getVideoWidth();
             mVideoHeight = mp.getVideoHeight();
@@ -374,14 +374,14 @@ public class VideoView extends SurfaceView
                     // start the video here instead of in the callback.
                     if (mTargetState == STATE_PLAYING) {
                         start();
-                        if (mMediaController != null) {
-                            mMediaController.show();
+                        if (mNgocMediaController != null) {
+                            mNgocMediaController.show();
                         }
                     } else if (!isPlaying() &&
                             (seekToPosition != 0 || getCurrentPosition() > 0)) {
-                        if (mMediaController != null) {
+                        if (mNgocMediaController != null) {
                             // Show the media controls when we're paused into a video and make 'em stick.
-                            mMediaController.show(0);
+                            mNgocMediaController.show(0);
                         }
                     }
                 }
@@ -400,10 +400,10 @@ public class VideoView extends SurfaceView
                 public void onCompletion(MediaPlayer mp) {
                     mCurrentState = STATE_PLAYBACK_COMPLETED;
                     mTargetState = STATE_PLAYBACK_COMPLETED;
-                    if (mMediaController != null) {
+                    if (mNgocMediaController != null) {
                         boolean a = mMediaPlayer.isPlaying();
                         int b = mCurrentState;
-                        mMediaController.showComplete();
+                        mNgocMediaController.showComplete();
                         Log.d(TAG, String.format("a=%s,b=%d", a, b));
                     }
                     if (mOnCompletionListener != null) {
@@ -421,8 +421,8 @@ public class VideoView extends SurfaceView
                             if (videoViewCallback != null) {
                                 videoViewCallback.onBufferingStart(mMediaPlayer);
                             }
-                            if (mMediaController != null) {
-                                mMediaController.showLoading();
+                            if (mNgocMediaController != null) {
+                                mNgocMediaController.showLoading();
                             }
                             handled = true;
                             break;
@@ -431,8 +431,8 @@ public class VideoView extends SurfaceView
                             if (videoViewCallback != null) {
                                 videoViewCallback.onBufferingEnd(mMediaPlayer);
                             }
-                            if (mMediaController != null) {
-                                mMediaController.hideLoading();
+                            if (mNgocMediaController != null) {
+                                mNgocMediaController.hideLoading();
                             }
                             handled = true;
                             break;
@@ -449,8 +449,8 @@ public class VideoView extends SurfaceView
                 public boolean onError(MediaPlayer mp, int framework_err, int impl_err) {
                     mCurrentState = STATE_ERROR;
                     mTargetState = STATE_ERROR;
-                    if (mMediaController != null) {
-                        mMediaController.showError();
+                    if (mNgocMediaController != null) {
+                        mNgocMediaController.showError();
                     }
 
                     if (mOnErrorListener != null) {
@@ -542,7 +542,7 @@ public class VideoView extends SurfaceView
         public void surfaceDestroyed(SurfaceHolder holder)
         {
             mSurfaceHolder = null;
-            if (mMediaController != null) mMediaController.hide();
+            if (mNgocMediaController != null) mNgocMediaController.hide();
             release(true);
             disableOrientationDetect();
         }
@@ -551,7 +551,7 @@ public class VideoView extends SurfaceView
     private void enableOrientationDetect() {
         if (mAutoRotation && mOrientationDetector == null) {
             mOrientationDetector = new OrientationDetector(mContext);
-            mOrientationDetector.setOrientationChangeListener(VideoView.this);
+            mOrientationDetector.setOrientationChangeListener(NgocVideoView.this);
             mOrientationDetector.enable();
         }
     }
@@ -576,7 +576,7 @@ public class VideoView extends SurfaceView
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (isInPlaybackState() && mMediaController != null) {
+        if (isInPlaybackState() && mNgocMediaController != null) {
             toggleMediaControlsVisibility();
         }
         return false;
@@ -584,7 +584,7 @@ public class VideoView extends SurfaceView
 
     @Override
     public boolean onTrackballEvent(MotionEvent ev) {
-        if (isInPlaybackState() && mMediaController != null) {
+        if (isInPlaybackState() && mNgocMediaController != null) {
             toggleMediaControlsVisibility();
         }
         return false;
@@ -600,28 +600,28 @@ public class VideoView extends SurfaceView
                 keyCode != KeyEvent.KEYCODE_MENU &&
                 keyCode != KeyEvent.KEYCODE_CALL &&
                 keyCode != KeyEvent.KEYCODE_ENDCALL;
-        if (isInPlaybackState() && isKeyCodeSupported && mMediaController != null) {
+        if (isInPlaybackState() && isKeyCodeSupported && mNgocMediaController != null) {
             if (keyCode == KeyEvent.KEYCODE_HEADSETHOOK ||
                     keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
                 if (mMediaPlayer.isPlaying()) {
                     pause();
-                    mMediaController.show();
+                    mNgocMediaController.show();
                 } else {
                     start();
-                    mMediaController.hide();
+                    mNgocMediaController.hide();
                 }
                 return true;
             } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
                 if (!mMediaPlayer.isPlaying()) {
                     start();
-                    mMediaController.hide();
+                    mNgocMediaController.hide();
                 }
                 return true;
             } else if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP
                     || keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE) {
                 if (mMediaPlayer.isPlaying()) {
                     pause();
-                    mMediaController.show();
+                    mNgocMediaController.show();
                 }
                 return true;
             } else {
@@ -633,18 +633,18 @@ public class VideoView extends SurfaceView
     }
 
     private void toggleMediaControlsVisibility() {
-        if (mMediaController.isShowing()) {
-            mMediaController.hide();
+        if (mNgocMediaController.isShowing()) {
+            mNgocMediaController.hide();
         } else {
-            mMediaController.show();
+            mNgocMediaController.show();
         }
     }
 
 
     @Override
     public void start() {
-        if (!mPreparedBeforeStart && mMediaController != null) {
-            mMediaController.showLoading();
+        if (!mPreparedBeforeStart && mNgocMediaController != null) {
+            mNgocMediaController.showLoading();
         }
 
         if (isInPlaybackState()) {
@@ -773,7 +773,7 @@ public class VideoView extends SurfaceView
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             activity.setRequestedOrientation(screenOrientation);
         }
-        mMediaController.toggleButtons(fullscreen);
+        mNgocMediaController.toggleButtons(fullscreen);
         if (videoViewCallback != null) {
             videoViewCallback.onScaleChange(fullscreen);
         }

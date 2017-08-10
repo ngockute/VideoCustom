@@ -25,17 +25,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.videoview.MediaController;
-import com.videoview.VideoView;
+import com.videoview.NgocMediaController;
+import com.videoview.NgocVideoView;
 
-public class MainActivity extends AppCompatActivity implements VideoView.VideoViewCallback{
+public class MainActivity extends AppCompatActivity implements NgocVideoView.VideoViewCallback{
 
     private static final String TAG = "MainActivity";
     private static final String SEEK_POSITION_KEY = "SEEK_POSITION_KEY";
     private static final String VIDEO_URL = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
-    VideoView mVideoView;
-    MediaController mMediaController;
+    NgocVideoView mNgocVideoView;
+    NgocMediaController mNgocMediaController;
 
 
     View mVideoLayout;
@@ -52,25 +52,25 @@ public class MainActivity extends AppCompatActivity implements VideoView.VideoVi
 
         mVideoLayout = findViewById(R.id.video_layout);
 
-        mVideoView = (VideoView) findViewById(R.id.videoView);
-        mMediaController = (MediaController) findViewById(R.id.media_controller);
-        mVideoView.setMediaController(mMediaController);
+        mNgocVideoView = (NgocVideoView) findViewById(R.id.videoView);
+        mNgocMediaController = (NgocMediaController) findViewById(R.id.media_controller);
+        mNgocVideoView.setMediaController(mNgocMediaController);
         setVideoAreaSize();
-        mVideoView.setVideoViewCallback(this);
+        mNgocVideoView.setVideoViewCallback(this);
         mStart = (TextView) findViewById(R.id.start);
 
         mStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mSeekPosition > 0) {
-                    mVideoView.seekTo(mSeekPosition);
+                    mNgocVideoView.seekTo(mSeekPosition);
                 }
-                mVideoView.start();
+                mNgocVideoView.start();
 
             }
         });
 
-        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        mNgocVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 Log.d(TAG, "onCompletion ");
@@ -83,10 +83,10 @@ public class MainActivity extends AppCompatActivity implements VideoView.VideoVi
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause ");
-        if (mVideoView != null && mVideoView.isPlaying()) {
-            mSeekPosition = mVideoView.getCurrentPosition();
+        if (mNgocVideoView != null && mNgocVideoView.isPlaying()) {
+            mSeekPosition = mNgocVideoView.getCurrentPosition();
             Log.d(TAG, "onPause mSeekPosition=" + mSeekPosition);
-            mVideoView.pause();
+            mNgocVideoView.pause();
         }
     }
 
@@ -103,8 +103,8 @@ public class MainActivity extends AppCompatActivity implements VideoView.VideoVi
                 videoLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
                 videoLayoutParams.height = cachedHeight;
                 mVideoLayout.setLayoutParams(videoLayoutParams);
-                mVideoView.setVideoPath(VIDEO_URL);
-                mVideoView.requestFocus();
+                mNgocVideoView.setVideoPath(VIDEO_URL);
+                mNgocVideoView.requestFocus();
             }
         });
     }
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements VideoView.VideoVi
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState Position=" + mVideoView.getCurrentPosition());
+        Log.d(TAG, "onSaveInstanceState Position=" + mNgocVideoView.getCurrentPosition());
         outState.putInt(SEEK_POSITION_KEY, mSeekPosition);
     }
 
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements VideoView.VideoVi
     @Override
     public void onBackPressed() {
         if (this.isFullscreen) {
-            mVideoView.setFullscreen(false);
+            mNgocVideoView.setFullscreen(false);
         } else {
             super.onBackPressed();
         }

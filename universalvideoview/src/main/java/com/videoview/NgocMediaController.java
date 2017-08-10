@@ -37,10 +37,10 @@ import android.widget.TextView;
 import java.util.Formatter;
 import java.util.Locale;
 
-public class MediaController extends FrameLayout {
+public class NgocMediaController extends FrameLayout {
 
 
-    private MediaController.MediaPlayerControl mPlayer;
+    private NgocMediaController.MediaPlayerControl mPlayer;
 
     private Context mContext;
 
@@ -97,16 +97,16 @@ public class MediaController extends FrameLayout {
 
     private View mCenterPlayButton;
 
-    public MediaController(Context context, AttributeSet attrs) {
+    public NgocMediaController(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.MediaController);
-        mScalable = a.getBoolean(R.styleable.MediaController_uvv_scalable, false);
+        TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.NgocMediaController);
+        mScalable = a.getBoolean(R.styleable.NgocMediaController_uvv_scalable, false);
         a.recycle();
         init(context);
     }
 
-    public MediaController(Context context) {
+    public NgocMediaController(Context context) {
         super(context);
         init(context);
     }

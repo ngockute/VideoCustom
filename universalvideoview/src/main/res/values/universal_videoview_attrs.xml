@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="MediaController">
+    <declare-styleable name="NgocMediaController">
         <attr name="uvv_scalable" format="boolean" />
     </declare-styleable>
 
 
-    <declare-styleable name="VideoView">
+    <declare-styleable name="NgocVideoView">
         <attr name="uvv_fitXY" format="boolean" />
         <attr name="uvv_autoRotation" format="boolean" />
     </declare-styleable>
