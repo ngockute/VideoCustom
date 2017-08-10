@@ -95,9 +95,9 @@ public class NgocVideoView extends SurfaceView
     public NgocVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
-        TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.VideoView,0,0);
-        mFitXY = a.getBoolean(R.styleable.VideoView_uvv_fitXY, false);
-        mAutoRotation = a.getBoolean(R.styleable.VideoView_uvv_autoRotation, false);
+        TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.NgocVideoView,0,0);
+        mFitXY = a.getBoolean(R.styleable.NgocVideoView_uvv_fitXY, false);
+        mAutoRotation = a.getBoolean(R.styleable.NgocVideoView_uvv_autoRotation, false);
         a.recycle();
         initVideoView();
     }
